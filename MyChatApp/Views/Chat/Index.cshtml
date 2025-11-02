@@ -1,0 +1,48 @@
+@model List<MyChatApp.Models.Chat>
+
+@{
+    ViewData["Title"] = "Chats";
+}
+
+<div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Chats</h1>
+        <form class="new-chat-form" method="post" asp-action="Create">
+            <input class="form-control" style="width:220px;" type="text" name="title" placeholder="Chat title" />
+            <select class="form-select" name="model" style="width:160px;">
+                <option value="gpt-4o-mini">gpt-4o-mini</option>
+                <option value="gpt-4o">gpt-4o</option>
+            </select>
+            <button class="btn btn-primary" type="submit">New Chat</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="list-group shadow-sm">
+            @if (Model?.Any() ?? false)
+            {
+                foreach (var c in Model)
+                {
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" asp-action="Open" asp-route-id="@c.Id">
+                        <div>
+                            <div class="fw-bold">@c.Title</div>
+                            <div class="text-muted small">@c.Model</div>
+                        </div>
+                        <small class="text-muted">@c.CreatedAt.ToLocalTime().ToString("g")</small>
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="list-group-item">No chats yet. Create one to get started.</div>
+            }
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body text-center text-muted">Select a chat to open conversation</div>
+        </div>
+    </div>
+</div>
